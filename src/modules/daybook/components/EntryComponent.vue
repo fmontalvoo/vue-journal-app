@@ -29,8 +29,6 @@
     }
 }
 
-.entry-title {}
-
 .entry-description {
     font-size: 12px;
 }
