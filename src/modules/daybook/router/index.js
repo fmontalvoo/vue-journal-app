@@ -6,6 +6,11 @@ export default {
             path: '',
             name: 'daybook-no-entry',
             component: () => import('../views/NoEntrySelectedView.vue'),
+        },
+        {
+            path: ':id',
+            name: 'daybook-entry',
+            component: () => import('../views/EntryView.vue')
         }
     ]
 }
