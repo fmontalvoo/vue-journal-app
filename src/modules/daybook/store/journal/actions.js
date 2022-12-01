@@ -1,8 +1,18 @@
-import { getJournals } from '@/modules/daybook/services';
+import { update, getAll } from '@/modules/daybook/services';
+
+export const createEntry = async (/*context*/) => {
+}
+
+export const updateEntry = async ({ commit, state }, entry) => {
+    state.isLoading = true
+    const { id, ...entryData } = entry
+    const updatedEntry = await update(id, entryData)
+    commit('updateEntry', { id, ...updatedEntry })
+}
 
 export const getEntries = async (context) => {
     context.state.isLoading = true
-    const data = await getJournals()
+    const data = await getAll()
     const entries = []
     for (let id of Object.keys(data)) {
         entries.push({
@@ -11,10 +21,4 @@ export const getEntries = async (context) => {
         })
     }
     context.commit('setEntries', entries)
-}
-
-export const createEntry = async (/*context*/) => {
-}
-
-export const updateEntry = async (/*context*/) => {
 }

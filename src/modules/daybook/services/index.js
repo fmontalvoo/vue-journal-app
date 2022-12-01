@@ -6,10 +6,18 @@ const journalApi = axios.create({
     baseURL: apiUrl
 })
 
-export const getJournals = async () => {
-    return await (await journalApi.get('/daybook.json')).data
+export const create = async (entry) => {
+    return await (await journalApi.post('/daybook.json', entry)).data
 }
 
-export const getJournalEntry = async (id = '') => {
+export const getById = async (id = '') => {
     return await (await journalApi.get(`/daybook/${id}.json`)).data
+}
+
+export const update = async (id = '', entry) => {
+    return await (await journalApi.put(`/daybook/${id}.json`, entry)).data
+}
+
+export const getAll = async () => {
+    return await (await journalApi.get('/daybook.json')).data
 }

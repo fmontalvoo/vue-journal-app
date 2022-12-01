@@ -26,13 +26,13 @@
 
     <img v-if="entry?.image" class="img-thumbnail" src="@/assets/logo.png" alt="" />
 
-    <FABComponent icon="fa-save" />
+    <FABComponent @on:click="saveEntry" icon="fa-save" />
 
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { defineAsyncComponent } from 'vue'
+import { mapGetters, mapActions } from 'vuex'
 
 import { dayName, monthName, day, year } from '@/modules/daybook/utils'
 
@@ -42,7 +42,7 @@ export default {
     },
     props: {
         id: {
-            type: Number,
+            type: String,
             required: true,
         },
     },
@@ -60,11 +60,15 @@ export default {
         }
     },
     methods: {
+        ...mapActions('journal', ['updateEntry']),
+        saveEntry() {
+            this.updateEntry(this.entry)
+        },
         findEntriesById() {
             const found = this.getEntryById(this.id)
             if (!found) this.$router.push({ name: 'daybook-no-entry' })
             this.entry = found
-        }
+        },
     },
     computed: {
         ...mapGetters('journal', ['getEntryById']),
