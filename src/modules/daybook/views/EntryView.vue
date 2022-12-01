@@ -1,35 +1,33 @@
 <template>
-    <div v-if="entry">
-        <div class="entry-title d-flex justify-content-between p-2">
-            <div>
-                <span class="text-success fs-3 fw-bold">{{ day }}</span>
-                <span class="mx-1 fs-3">{{ monthName }}</span>
-                <span class="mx-2 fs-4 fw-light">{{ `${year}, ${dayName}` }}</span>
-            </div>
-
-            <div>
-                <button class="btn btn-primary">
-                    Subir foto
-                    <i class="fa fa-upload"></i>
-                </button>
-
-                <button class="btn btn-danger mx-2">
-                    <i class="fa fa-trash-alt"></i>
-                </button>
-            </div>
+    <div v-if="entry" class="entry-title d-flex justify-content-between p-2">
+        <div>
+            <span class="text-success fs-3 fw-bold">{{ day }}</span>
+            <span class="mx-1 fs-3">{{ monthName }}</span>
+            <span class="mx-2 fs-4 fw-light">{{ `${year}, ${dayName}` }}</span>
         </div>
 
-        <hr>
+        <div>
+            <button class="btn btn-primary">
+                Subir foto
+                <i class="fa fa-upload"></i>
+            </button>
 
-        <div v-if="entry.text" class="d-flex flex-column px-3 h-75">
-            <textarea placeholder="¿Que sucedió hoy?" v-model="entry.text"></textarea>
+            <button class="btn btn-danger mx-2">
+                <i class="fa fa-trash-alt"></i>
+            </button>
         </div>
-
-        <FABComponent icon="fa-save" />
-
-        <img v-if="entry.image" class="img-thumbnail" src="@/assets/logo.png" alt="" />
-
     </div>
+
+    <hr>
+
+    <div v-if="entry?.text" class="d-flex flex-column px-3 h-75">
+        <textarea placeholder="¿Que sucedió hoy?" v-model="entry.text"></textarea>
+    </div>
+
+    <img v-if="entry?.image" class="img-thumbnail" src="@/assets/logo.png" alt="" />
+
+    <FABComponent icon="fa-save" />
+
 </template>
 
 <script>

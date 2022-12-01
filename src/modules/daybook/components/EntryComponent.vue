@@ -25,7 +25,7 @@ export default {
     computed: {
         trimmedText() {
             if (this.entry.text.length > 130)
-                return this.entry.text.slice(0, 130).concat('...')
+                return this.entry.text.slice(0, 130).trim().concat('...')
             return this.entry.text
         },
         dayName() {
