@@ -1,6 +1,9 @@
-import { update, getAll } from '@/modules/daybook/services';
+import { create, update, getAll } from '@/modules/daybook/services';
 
-export const createEntry = async (/*context*/) => {
+export const createEntry = async ({ commit, state }, entry) => {
+    state.isLoading = true
+    const { name: id } = await create(entry)
+    commit('addEntry', { id, ...entry })
 }
 
 export const updateEntry = async ({ commit, state }, entry) => {

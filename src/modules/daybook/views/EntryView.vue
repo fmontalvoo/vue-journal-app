@@ -20,7 +20,7 @@
 
     <hr>
 
-    <div v-if="entry?.text" class="d-flex flex-column px-3 h-75">
+    <div class="d-flex flex-column px-3 h-75">
         <textarea placeholder="¿Que sucedió hoy?" v-model="entry.text"></textarea>
     </div>
 
@@ -60,14 +60,27 @@ export default {
         }
     },
     methods: {
-        ...mapActions('journal', ['updateEntry']),
+        ...mapActions('journal', ['createEntry', 'updateEntry']),
         saveEntry() {
-            this.updateEntry(this.entry)
+            if (this.entry.id)
+                this.updateEntry(this.entry)
+            else
+                this.createEntry(this.entry)
         },
         findEntriesById() {
-            const found = this.getEntryById(this.id)
-            if (!found) this.$router.push({ name: 'daybook-no-entry' })
-            this.entry = found
+            let entryData;
+
+            if (this.id === 'new') {
+                entryData = {
+                    text: '',
+                    date: new Date().getTime(),
+                }
+            } else {
+                entryData = this.getEntryById(this.id)
+                if (!entryData) this.$router.push({ name: 'daybook-no-entry' })
+            }
+
+            this.entry = entryData
         },
     },
     computed: {
