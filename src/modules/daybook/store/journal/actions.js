@@ -1,4 +1,4 @@
-import { create, update, getAll } from '@/modules/daybook/services';
+import { create, update, remove, getAll } from '@/modules/daybook/services';
 
 export const createEntry = async ({ commit, state }, entry) => {
     state.isLoading = true
@@ -11,6 +11,12 @@ export const updateEntry = async ({ commit, state }, entry) => {
     const { id, ...entryData } = entry
     const updatedEntry = await update(id, entryData)
     commit('updateEntry', { id, ...updatedEntry })
+}
+
+export const deleteEntry = async ({ commit, state }, id) => {
+    state.isLoading = true
+    await remove(id)
+    commit('removeEntry', id)
 }
 
 export const getEntries = async (context) => {

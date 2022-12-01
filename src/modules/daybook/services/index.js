@@ -18,6 +18,10 @@ export const update = async (id = '', entry) => {
     return await (await journalApi.put(`/daybook/${id}.json`, entry)).data
 }
 
+export const remove = async (id = '') => {
+    return await journalApi.delete(`/daybook/${id}.json`)
+}
+
 export const getAll = async () => {
     return await (await journalApi.get('/daybook.json')).data
 }

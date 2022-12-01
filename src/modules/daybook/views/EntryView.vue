@@ -12,7 +12,7 @@
                 <i class="fa fa-upload"></i>
             </button>
 
-            <button class="btn btn-danger mx-2">
+            <button class="btn btn-danger mx-2" @click="removeEntry">
                 <i class="fa fa-trash-alt"></i>
             </button>
         </div>
@@ -52,22 +52,22 @@ export default {
         }
     },
     created() {
-        this.findEntriesById()
+        this.findEntryById()
     },
     watch: {
         id() {
-            this.findEntriesById()
+            this.findEntryById()
         }
     },
     methods: {
-        ...mapActions('journal', ['createEntry', 'updateEntry']),
+        ...mapActions('journal', ['createEntry', 'updateEntry', 'deleteEntry']),
         saveEntry() {
             if (this.entry.id)
                 this.updateEntry(this.entry)
             else
                 this.createEntry(this.entry)
         },
-        findEntriesById() {
+        findEntryById() {
             let entryData;
 
             if (this.id === 'new') {
@@ -82,6 +82,12 @@ export default {
 
             this.entry = entryData
         },
+        removeEntry() {
+            if (this.entry.id) {
+                this.deleteEntry(this.id)
+                this.$router.push({ name: 'daybook-no-entry' })
+            }
+        }
     },
     computed: {
         ...mapGetters('journal', ['getEntryById']),
