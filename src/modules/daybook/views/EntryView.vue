@@ -12,7 +12,7 @@
                 <i class="fa fa-upload"></i>
             </button>
 
-            <button class="btn btn-danger mx-2" @click="removeEntry">
+            <button v-if="entry.id" class="btn btn-danger mx-2" @click="removeEntry">
                 <i class="fa fa-trash-alt"></i>
             </button>
         </div>
@@ -66,6 +66,8 @@ export default {
                 this.updateEntry(this.entry)
             else
                 this.createEntry(this.entry)
+
+            this.$router.push({ name: 'daybook-no-entry' })
         },
         findEntryById() {
             let entryData;

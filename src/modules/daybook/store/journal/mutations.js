@@ -1,6 +1,6 @@
 export const addEntry = (state, entry) => {
     state.isLoading = false
-    state.entries.push({ ...entry })
+    state.entries.unshift({ ...entry })
 }
 
 export const updateEntry = (state, entry) => {
