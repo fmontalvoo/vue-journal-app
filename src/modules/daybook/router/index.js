@@ -10,6 +10,7 @@ export default {
         {
             path: ':id',
             name: 'daybook-entry',
+            props: route => ({ id: Number(isNaN(route?.params?.id) ? 0 : route.params.id) }),
             component: () => import('../views/EntryView.vue')
         }
     ]

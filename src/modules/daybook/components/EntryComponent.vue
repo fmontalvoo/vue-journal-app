@@ -13,19 +13,13 @@
 </template>
 
 <script>
+import { dayName, monthName, day, year } from '@/modules/daybook/utils'
+
 export default {
     props: {
         entry: {
             type: Object,
             required: true
-        }
-    },
-    methods: {
-        capitalizeText(str = '') {
-            return str.replace(/(^\w{1})|(\s+\w{1})/g, letter => letter.toUpperCase())
-        },
-        localDateStr(date, format = {}, locale = 'es-EC') {
-            return new Date(date).toLocaleDateString(locale, format)
         }
     },
     computed: {
@@ -35,24 +29,17 @@ export default {
             return this.entry.text
         },
         dayName() {
-            return this.capitalizeText(
-                this.localDateStr(this.entry.date, { weekday: 'long' })
-            )
+            return dayName(this.entry.date)
         },
         monthName() {
-            return this.capitalizeText(
-                this.localDateStr(this.entry.date, { month: 'long' })
-            )
-        },
-        day() {
-            const currentDay = new Date(this.entry.date).getDate()
-            return currentDay <= 9
-                ? `0${currentDay}`
-                : currentDay
+            return monthName(this.entry.date)
         },
         year() {
-            return new Date(this.entry.date).getFullYear()
-        }
+            return year(this.entry.date)
+        },
+        day() {
+            return day(this.entry.date)
+        },
     }
 }
 </script>
