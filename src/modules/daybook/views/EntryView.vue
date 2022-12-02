@@ -42,6 +42,7 @@ import { uploadImage } from '@/modules/daybook/services'
 import { dayName, monthName, day, year } from '@/modules/daybook/utils'
 
 export default {
+    name: 'EntryView',
     components: {
         FABComponent: defineAsyncComponent(() => import('../components/FABComponent.vue'))
     },

@@ -9,6 +9,7 @@
 import { defineAsyncComponent } from 'vue'
 
 export default {
+    name: 'NoEntrySelectedView',
     components: {
         FABComponent: defineAsyncComponent(() => import('../components/FABComponent.vue'))
     },
