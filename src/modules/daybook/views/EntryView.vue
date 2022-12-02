@@ -7,7 +7,9 @@
         </div>
 
         <div>
-            <button class="btn btn-primary">
+            <input type="file" accept="image/png, image/jpeg" ref="inputFile" v-show="false" @change="onSelectImage" />
+
+            <button class="btn btn-primary" @click="selectFile">
                 Subir foto
                 <i class="fa fa-upload"></i>
             </button>
@@ -25,6 +27,7 @@
     </div>
 
     <img v-if="entry?.image" class="img-thumbnail" src="@/assets/logo.png" alt="" />
+    <img v-if="selectedImage" class="img-thumbnail" :src="selectedImage" />
 
     <FABComponent @on:click="saveEntry" icon="fa-save" />
 
@@ -49,7 +52,9 @@ export default {
     },
     data() {
         return {
+            file: null,
             entry: null,
+            selectedImage: null,
         }
     },
     created() {
@@ -63,25 +68,27 @@ export default {
     methods: {
         ...mapActions('journal', ['createEntry', 'updateEntry', 'deleteEntry']),
         saveEntry() {
-            if (this.entry.id)
-                this.updateEntry(this.entry)
-            else
-                this.createEntry(this.entry)
+            if (this.entry.text.trim()) {
+                if (this.entry.id)
+                    this.updateEntry(this.entry)
+                else
+                    this.createEntry(this.entry)
 
-            Swal.fire({
-                title: 'Entrada guardada',
-                text: "Acaba de registrar una nueva entrada",
-                icon: 'success',
-                allowOutsideClick: false,
-                confirmButtonColor: '#354952',
-                confirmButtonText: 'Aceptar'
-            }).then((result) => {
-                if (result.isConfirmed)
-                    if (!this.entry.id)
-                        this.$router.push({ name: 'daybook-no-entry' })
-                    else
-                        this.$router.push({ name: 'daybook-entry', params: { id: this.entry.id } })
-            })
+                Swal.fire({
+                    title: 'Entrada guardada',
+                    text: "Acaba de registrar una nueva entrada",
+                    icon: 'success',
+                    allowOutsideClick: false,
+                    confirmButtonColor: '#354952',
+                    confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                    if (result.isConfirmed)
+                        if (!this.entry.id)
+                            this.$router.push({ name: 'daybook-no-entry' })
+                        else
+                            this.$router.push({ name: 'daybook-entry', params: { id: this.entry.id } })
+                })
+            }
 
         },
         findEntryById() {
@@ -118,6 +125,23 @@ export default {
                 })
 
             }
+        },
+        onSelectImage(event) {
+            const file = event.target.files[0]
+            if (!file) {
+                this.selectedImage = null
+                this.file = null
+                return
+            }
+
+            this.file = file
+            const fr = new FileReader()
+            fr.readAsDataURL(this.file)
+            fr.onload = () => this.selectedImage = fr.result
+        },
+        selectFile() {
+            // console.log(this.$refs)
+            this.$refs.inputFile.click()
         }
     },
     computed: {
