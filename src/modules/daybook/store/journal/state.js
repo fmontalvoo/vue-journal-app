@@ -1,4 +1,4 @@
 export default () => ({
-    isLoading: false,
+    loading: false,
     entries: [],
 })

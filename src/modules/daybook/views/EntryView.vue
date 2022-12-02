@@ -31,6 +31,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 import { defineAsyncComponent } from 'vue'
 import { mapGetters, mapActions } from 'vuex'
 
@@ -67,7 +68,21 @@ export default {
             else
                 this.createEntry(this.entry)
 
-            this.$router.push({ name: 'daybook-no-entry' })
+            Swal.fire({
+                title: 'Entrada guardada',
+                text: "Acaba de registrar una nueva entrada",
+                icon: 'success',
+                allowOutsideClick: false,
+                confirmButtonColor: '#354952',
+                confirmButtonText: 'Aceptar'
+            }).then((result) => {
+                if (result.isConfirmed)
+                    if (!this.entry.id)
+                        this.$router.push({ name: 'daybook-no-entry' })
+                    else
+                        this.$router.push({ name: 'daybook-entry', params: { id: this.entry.id } })
+            })
+
         },
         findEntryById() {
             let entryData;
@@ -86,8 +101,22 @@ export default {
         },
         removeEntry() {
             if (this.entry.id) {
-                this.deleteEntry(this.id)
-                this.$router.push({ name: 'daybook-no-entry' })
+                Swal.fire({
+                    title: 'Esta seguro?',
+                    text: "Una vez eliminada la entrada, no se puede revertir!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#354952',
+                    cancelButtonColor: '#dc3545',
+                    confirmButtonText: 'Eliminar',
+                    cancelButtonText: 'Cancelar',
+                }).then(({ isConfirmed }) => {
+                    if (isConfirmed) {
+                        this.deleteEntry(this.id)
+                        this.$router.push({ name: 'daybook-no-entry' })
+                    }
+                })
+
             }
         }
     },

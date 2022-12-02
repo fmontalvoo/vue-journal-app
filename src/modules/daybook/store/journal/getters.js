@@ -17,3 +17,7 @@ export const getEntryById = (state) => (id = 0) => {
 
     return { ...entry }
 }
+
+export const isLoading = (state) => {
+    return state.loading
+}
