@@ -26,7 +26,7 @@
         <textarea placeholder="¿Que sucedió hoy?" v-model="entry.text"></textarea>
     </div>
 
-    <img v-if="entry?.image" class="img-thumbnail" src="@/assets/logo.png" alt="" />
+    <img v-if="(entry?.image && !localImage)" class="img-thumbnail" :src="entry.image" alt="" />
     <img v-if="selectedImage" class="img-thumbnail" :src="selectedImage" />
 
     <FABComponent @on:click="saveEntry" icon="fa-save" />
@@ -38,6 +38,7 @@ import Swal from 'sweetalert2'
 import { defineAsyncComponent } from 'vue'
 import { mapGetters, mapActions } from 'vuex'
 
+import { uploadImage } from '@/modules/daybook/services'
 import { dayName, monthName, day, year } from '@/modules/daybook/utils'
 
 export default {
@@ -67,8 +68,16 @@ export default {
     },
     methods: {
         ...mapActions('journal', ['createEntry', 'updateEntry', 'deleteEntry']),
-        saveEntry() {
+        async saveEntry() {
             if (this.entry.text.trim()) {
+                const imageUrl = await uploadImage(this.file)
+
+                if (imageUrl) {
+                    this.entry.image = imageUrl
+                    this.selectedImage = null
+                    this.file = null
+                }
+
                 if (this.entry.id)
                     this.updateEntry(this.entry)
                 else

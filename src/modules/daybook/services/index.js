@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const apiUrl = 'https://data-base-38d79.firebaseio.com'
+const apiUrl = process.env.VUE_APP_API_URL
+const cloudinaryUrl = process.env.VUE_APP_CLOUDINARY_URL
 
 const journalApi = axios.create({
     baseURL: apiUrl
@@ -24,4 +25,20 @@ export const remove = async (id = '') => {
 
 export const getAll = async () => {
     return await (await journalApi.get('/daybook.json')).data
+}
+
+export const uploadImage = async (file) => {
+    if (!file) return null
+
+    try {
+        console.info('Uploading image')
+        const formData = new FormData()
+        formData.append('file ', file)
+        formData.append('upload_preset ', 'vue_preset')
+        const { data } = await axios.post(cloudinaryUrl, formData)
+        return data.secure_url
+    } catch (e) {
+        console.error(e)
+        return null
+    }
 }
