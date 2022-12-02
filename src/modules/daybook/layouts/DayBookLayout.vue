@@ -1,6 +1,6 @@
 <template>
     <NavbarComponent />
-    <div v-if="loading" class="row justify-content-md-center">
+    <div v-if="isLoading" class="row justify-content-md-center">
         <div class="col-3 alert alert-info text-center mt-5">
             Espere por favor...
             <div class="mt-2">
@@ -21,7 +21,7 @@
 
 <script>
 import { defineAsyncComponent } from 'vue'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
     components: {
@@ -32,7 +32,7 @@ export default {
         ...mapActions('journal', ['getEntries'])
     },
     computed: {
-        ...mapState('journal', ['loading'])
+        ...mapGetters('journal', ['isLoading'])
     },
     created() {
         this.getEntries()
