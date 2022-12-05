@@ -8,7 +8,7 @@ export const getEntriesByQuery = (state) => (query = '') => {
     return state.entries
 }
 
-export const getEntryById = (state) => (id = 0) => {
+export const getEntryById = (state) => (id = '') => {
     if (!id) return null
 
     const entry = state.entries.find(entry => entry.id === id)

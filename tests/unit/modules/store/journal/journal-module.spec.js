@@ -23,64 +23,97 @@ describe('Vuex - Journal module', () => {
         expect(entries).toEqual(journalState.entries)
     })
 
-    it('mutation: setEntries', () => {
-        const store = createVuexStore({ isLoading: true, entries: [] })
+    describe('Vuex - Mutations', () => {
+        it('mutation: setEntries', () => {
+            const store = createVuexStore({ isLoading: true, entries: [] })
 
-        store.commit('journal/setEntries', journalState.entries)
+            store.commit('journal/setEntries', journalState.entries)
 
-        expect(store.state.journal.entries.length).toBe(2)
-        expect(store.state.journal.loading).toBeFalsy()
+            expect(store.state.journal.entries.length).toBe(2)
+            expect(store.state.journal.loading).toBeFalsy()
+        })
+
+        it('mutation: updateEntry', () => {
+            const store = createVuexStore(journalState)
+
+            const entry = {
+                ...journalState.entries[0],
+                text: "Hello world!!!"
+            }
+
+            store.commit('journal/updateEntry', entry)
+
+            expect(store.state.journal.entries.length).toBe(2)
+            expect(store.state.journal.loading).toBeFalsy()
+
+            expect(journalState.entries[0].text).toEqual('Hello world!!!')
+        })
+
+        it('mutation: addEntry', () => {
+            const store = createVuexStore(journalState)
+
+            const entry = {
+                id: "-NIG7DB_ert91KFrE_UE",
+                date: 1670277186818,
+                image: "https://res.cloudinary.com/drkmejmbw/image/upload/v1670038210/vue-journal/jzcs6qmbs8rfcxz1turr.png",
+                text: "Hello world!!!"
+            }
+
+            store.commit('journal/addEntry', entry)
+
+            expect(store.state.journal.entries.length).toBe(3)
+            expect(store.state.journal.loading).toBeFalsy()
+
+            const found = store.state.journal.entries.find(e => entry.id === entry.id)
+
+            expect(found).toEqual(entry)
+        })
+
+        it('mutation: removeEntry', () => {
+            const id = '-NIG7DB_ney91KkIR_IE'
+            const store = createVuexStore(journalState)
+
+            expect(store.state.journal.entries.length).toBe(3)
+
+            store.commit('journal/removeEntry', id)
+
+            expect(store.state.journal.entries.length).toBe(2)
+            expect(store.state.journal.loading).toBeFalsy()
+
+            const found = store.state.journal.entries.find(e => e.id === id)
+
+            expect(found).toBeFalsy()
+        })
     })
 
-    it('mutation: updateEntry', () => {
-        const store = createVuexStore(journalState)
+    describe('Vuex - Getters', () => {
+        it('getter: getEntriesByQuery', () => {
+            const store = createVuexStore(journalState)
 
-        const entry = {
-            ...journalState.entries[0],
-            text: "Hello world!!!"
-        }
+            const found = store.getters['journal/getEntriesByQuery']('hola')
 
-        store.commit('journal/updateEntry', entry)
+            expect(found[0]).toBeTruthy()
+            expect(found.length).toBe(1)
 
-        expect(store.state.journal.entries.length).toBe(2)
-        expect(store.state.journal.loading).toBeFalsy()
+            expect(found[0].text).toBe('Hola mundo...')
+        })
 
-        expect(journalState.entries[0].text).toEqual('Hello world!!!')
-    })
+        it('getter: getEntryById', () => {
+            const store = createVuexStore(journalState)
 
-    it('mutation: addEntry', () => {
-        const store = createVuexStore(journalState)
+            const found = store.getters['journal/getEntryById']('-NIG7DB_ert91KFrE_UE')
 
-        const entry = {
-            id: "-NIG7DB_ert91KFrE_UE",
-            date: 1670277186818,
-            image: "https://res.cloudinary.com/drkmejmbw/image/upload/v1670038210/vue-journal/jzcs6qmbs8rfcxz1turr.png",
-            text: "Hello world!!!"
-        }
+            expect(found).toBeTruthy()
 
-        store.commit('journal/addEntry', entry)
+            expect(found.text).toBe('Hello world!!!')
+        })
 
-        expect(store.state.journal.entries.length).toBe(3)
-        expect(store.state.journal.loading).toBeFalsy()
+        it('getter: isLoading', () => {
+            const store = createVuexStore(journalState)
 
-        const found = store.state.journal.entries.find(e => entry.id === entry.id)
+            const loading = store.getters['journal/isLoading']
 
-        expect(found).toEqual(entry)
-    })
-
-    it('mutation: removeEntry', () => {
-        const id = '-NIGGFUjnaETcfdH8scl'
-        const store = createVuexStore(journalState)
-
-        expect(store.state.journal.entries.length).toBe(3)
-
-        store.commit('journal/removeEntry', id)
-
-        expect(store.state.journal.entries.length).toBe(2)
-        expect(store.state.journal.loading).toBeFalsy()
-
-        const found = store.state.journal.entries.find(e => e.id === id)
-
-        expect(found).toBeFalsy()
+            expect(loading).toBeFalsy()
+        })
     })
 })
