@@ -4,6 +4,8 @@ import journal from '@/modules/daybook/store/journal'
 
 import { journalState } from '../../mock/mock.journal.state'
 
+import { journalApi } from '@/modules/daybook/services';
+
 const createVuexStore = (initialState) => createStore({
     modules: {
         journal: {
@@ -25,7 +27,7 @@ describe('Vuex - Journal module', () => {
 
     describe('Vuex - Mutations', () => {
         it('mutation: setEntries', () => {
-            const store = createVuexStore({ isLoading: true, entries: [] })
+            const store = createVuexStore({ loading: true, entries: [] })
 
             store.commit('journal/setEntries', journalState.entries)
 
@@ -114,6 +116,35 @@ describe('Vuex - Journal module', () => {
             const loading = store.getters['journal/isLoading']
 
             expect(loading).toBeFalsy()
+        })
+    })
+
+    describe('Vuex - Actions', () => {
+        it('action: getEntries', async () => {
+            const store = createVuexStore({ loading: true, entries: [] })
+
+            const spyOnStoreCommit = jest.spyOn(store, 'commit')
+            const spyOnPostMethod = jest.spyOn(journalApi, 'get').mockResolvedValue({
+                data:
+                {
+                    "-NIG7DB_ney91KkIR_IE":
+                    {
+                        "date": 1669955893345,
+                        "image": "https://res.cloudinary.com/drkmejmbw/image/upload/v1670038210/vue-journal/jzcs6qmbs8rfcxz1turr.png",
+                        "text": "Hola mundo!!!"
+                    },
+                    "-NIGGFUjnaETcfdH8scl":
+                    {
+                        "date": 1669958260920,
+                        "image": "https://res.cloudinary.com/drkmejmbw/image/upload/v1670037775/vue-journal/b25v6ium4f5zqmx6clkr.png",
+                        "text": "Hola mundo..."
+                    }
+                }
+            })
+
+            await store.dispatch('journal/getEntries')
+
+            expect(store.state.journal.entries.length).toBe(2)
         })
     })
 })

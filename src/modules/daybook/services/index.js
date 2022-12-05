@@ -3,7 +3,7 @@ import axios from 'axios'
 const apiUrl = process.env.VUE_APP_API_URL
 const cloudinaryUrl = process.env.VUE_APP_CLOUDINARY_URL
 
-const journalApi = axios.create({
+export const journalApi = axios.create({
     baseURL: apiUrl
 })
 
