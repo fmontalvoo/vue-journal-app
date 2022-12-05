@@ -33,8 +33,8 @@ export const uploadImage = async (file) => {
     try {
         console.info('Uploading image')
         const formData = new FormData()
-        formData.append('file ', file)
-        formData.append('upload_preset ', 'vue_preset')
+        formData.append('file', file)
+        formData.append('upload_preset', 'vue_app')
         const { data } = await axios.post(cloudinaryUrl, formData)
         return data.secure_url
     } catch (e) {

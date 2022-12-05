@@ -26,7 +26,7 @@
         <textarea placeholder="¿Que sucedió hoy?" v-model="entry.text"></textarea>
     </div>
 
-    <img v-if="(entry?.image && !localImage)" class="img-thumbnail" :src="entry.image" alt="" />
+    <img v-if="(entry?.image && !selectedImage)" class="img-thumbnail" :src="entry.image" alt="" />
     <img v-if="selectedImage" class="img-thumbnail" :src="selectedImage" />
 
     <FABComponent @on:click="saveEntry" icon="fa-save" />
