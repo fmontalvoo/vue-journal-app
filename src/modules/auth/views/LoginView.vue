@@ -5,7 +5,7 @@
     <form class="login100-form validate-form p-b-33 p-t-5">
 
         <div class="wrap-input100 validate-input">
-            <input class="input100" type="text" placeholder="Correo" required>
+            <input class="input100" type="email" placeholder="Correo" required>
             <span class="focus-input100" data-placeholder="&#xe818;"></span>
         </div>
 
@@ -18,7 +18,6 @@
             <button class="login100-form-btn">
                 Ingresar
             </button>
-
         </div>
 
         <div class="container-login100-form-btn m-t-32">

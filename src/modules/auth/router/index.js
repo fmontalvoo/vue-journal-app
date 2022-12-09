@@ -14,6 +14,7 @@ export default {
         },
         {
             path: '',
+            name: 'auth-default',
             redirect: { name: 'auth-login' }
         }
     ]
