@@ -12,6 +12,35 @@ const authApi = axios.create({
     }
 })
 
+export const login = async (email, password) => {
+    try {
+        const { data } = await authApi.post(':signInWithPassword', {
+            email,
+            password,
+            returnSecureToken: true
+        })
+        const { idToken, refreshToken, displayName } = data
+
+        const credentials = {
+            idToken,
+            refreshToken,
+            user: {
+                email,
+                name: displayName,
+            }
+        }
+
+        return {
+            ok: true,
+            credentials,
+            message: 'User successfully logged in'
+        }
+
+    } catch (error) {
+        return { ok: false, message: error.response.data.error.message }
+    }
+}
+
 export const create = async (user) => {
     const { email, password } = user
 

@@ -3,14 +3,21 @@ import { useStore } from 'vuex'
 const useAuth = () => {
     const store = useStore()
 
-    const createUser = async (user) => {
-        const response = await store.dispatch('auth/createUser', user)
+    const login = async ({ email, password }) => {
+        const response = await store.dispatch('auth/loginUser', { email, password })
+        const { ok, message } = response
+        return { ok, message }
+    }
+
+    const register = async (user) => {
+        const response = await store.dispatch('auth/registerUser', user)
         const { ok, message } = response
         return { ok, message }
     }
 
     return {
-        createUser,
+        login,
+        register,
     }
 }
 
