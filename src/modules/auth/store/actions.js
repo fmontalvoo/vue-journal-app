@@ -1,4 +1,4 @@
-import { login, create } from '@/modules/auth/services'
+import { login, create, getUser } from '@/modules/auth/services'
 
 export const loginUser = async ({ commit }, { email, password }) => {
     const response = await login(email, password)
@@ -18,4 +18,31 @@ export const registerUser = async ({ commit }, user) => {
     else throw response.message
 
     return response
+}
+
+export const checkSessionStatus = async ({ commit }) => {
+    const idToken = localStorage.getItem('idToken')
+    const refreshToken = localStorage.getItem('refreshToken')
+
+    if (!idToken) {
+        commit('logout')
+        return false
+    }
+
+    const { ok, user } = await getUser(idToken)
+
+    if (ok) {
+        const credentials = {
+            user,
+            idToken,
+            refreshToken,
+        }
+        commit('login', credentials)
+    }
+    else {
+        commit('logout')
+    }
+
+    return ok
+
 }
