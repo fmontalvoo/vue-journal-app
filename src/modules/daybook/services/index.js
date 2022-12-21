@@ -7,6 +7,16 @@ export const journalApi = axios.create({
     baseURL: apiUrl
 })
 
+journalApi.interceptors.request.use((config) => {
+    const token = localStorage.getItem('idToken')
+
+    config.params = {
+        auth: token
+    }
+
+    return config
+})
+
 export const create = async (entry) => {
     return await (await journalApi.post('/daybook.json', entry)).data
 }
