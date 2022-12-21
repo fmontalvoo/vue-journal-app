@@ -10,6 +10,11 @@ const useAuth = () => {
         return { ok, message }
     }
 
+    const logout = () => {
+        store.dispatch('auth/logoutUser')
+        store.commit('journal/clearEntries')
+    }
+
     const register = async (user) => {
         const response = await store.dispatch('auth/registerUser', user)
         const { ok, message } = response
@@ -20,9 +25,11 @@ const useAuth = () => {
 
     return {
         login,
+        logout,
         register,
         checkStatus,
         authStatus: computed(() => store.getters['auth/currentState']),
+        username: computed(() => store.getters['auth/username'])
     }
 }
 

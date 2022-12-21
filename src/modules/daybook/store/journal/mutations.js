@@ -19,3 +19,7 @@ export const setEntries = (state, entries) => {
     state.entries = [...state.entries, ...entries]
     state.loading = false
 }
+
+export const clearEntries = (state) => {
+    state.entries = []
+}

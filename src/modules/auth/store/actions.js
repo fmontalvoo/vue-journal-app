@@ -10,6 +10,8 @@ export const loginUser = async ({ commit }, { email, password }) => {
     return response
 }
 
+export const logoutUser = async ({ commit }) => commit('logout')
+
 export const registerUser = async ({ commit }, user) => {
     const response = await create(user)
 
