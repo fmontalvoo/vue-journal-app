@@ -3,7 +3,7 @@
         <router-link :to="{ name: 'daybook-no-entry' }" v-slot="{ href }">
             <a class="navbar-brand text-white" :href="href">
                 <img class="d-inline-block align-text-top mx-2" width="24" src="@/assets/logo.png" alt="Logo">
-                <span>Daybook: [{{ username }}]</span>
+                <span>Daybook: {{ username }} ({{email}})</span>
             </a>
         </router-link>
 
@@ -25,9 +25,10 @@ export default {
     setup() {
         const router = useRouter()
 
-        const { logout, username } = useAuth()
+        const { logout, username, email } = useAuth()
 
         return {
+            email,
             username,
             onLogout() {
                 logout()
